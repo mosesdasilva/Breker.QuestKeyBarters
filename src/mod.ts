@@ -49,7 +49,8 @@ class Mod implements IPostDBLoadMod {
     }
 
     //why is this declared after the code block above and not before???
-    pushToTrader(barterConfig, itemID:string, dbTraders: Record<string, ITrader>){
+    //need explantion for this whole block below in plain english, word for word, dont know why I need this
+    pushToTrader(barterConfig, itemID:string, dbTraders: Record<string, ITrader>,){ 
         const traderIDs = {
             mechanic: Traders.MECHANIC,
             skier: Traders.SKIER,
@@ -61,10 +62,10 @@ class Mod implements IPostDBLoadMod {
         };
 
         let traderToPush = barterConfig.trader;
-        for (const [key, val] of Object.entries(traderIDs))// explain me this line, have no idia what is actually does
+        for (const [key, val] of Object.entries(traderIDs))
         {
             if (key === barterConfig.trader){
-                traderToPush = val; 
+                traderToPush = val;
             }
         }
         const trader = dbTraders[traderToPush];
@@ -77,19 +78,19 @@ class Mod implements IPostDBLoadMod {
             upd:
             {
                 UnlimitedCount: barterConfig.unlimited_stock,
-                StackObjectsCount: barterConfig.stock_amout
+                StackObjectsCount: barterConfig.stock_amount
             }
         });
 
         const barterTrade: any = [];
-        const configBarters = barterConfig.barters;
+        const configBarters = barterConfig.barter;
 
         for (const barter in configBarters){
             barterTrade.push(configBarters[barter]);
         }
 
         trader.assort.barter_scheme[itemID] = [barterTrade];
-        trader.assort.loyal_level_items[itemID] = barterConfig.trader_loyalty_level;      
+        trader.assort.loyal_level_items[itemID] = barterConfig.trader_loyalty_level;  
     }
 }
 
