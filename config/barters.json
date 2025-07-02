@@ -1,0 +1,875 @@
+{
+    "Dorm room 203 key": {
+        "id": "5938504186f7740991483f30",
+        "trader": "prapor",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5d40419286f774318526545f" 
+            },
+            {
+            "count": 1,
+            "_tpl": "5734779624597737e04bf329" 
+            }
+        ]
+    },
+
+    "Dorm room 214 key": {
+        "id": "5780cf942459777df90dcb72",
+        "trader": "prapor",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5d40419286f774318526545f"
+            },
+            {
+            "count": 1,
+            "_tpl": "5734779624597737e04bf329"
+            }
+        ]
+    },
+
+    "Tarcone Director's office key": {
+        "id": "5780d0532459777a5108b9a2",
+        "trader": "prapor",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5d40419286f774318526545f"
+            },
+            {
+            "count": 1,
+            "_tpl": "57347c1124597737fb1379e3"
+            }
+        ]
+    },
+
+    "Trailer park portable cabin key": {
+        "id": "5913611c86f77479e0084092",
+        "trader": "prapor",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "573475fb24597737fb1379e1"
+            },
+            {
+            "count": 1,
+            "_tpl": "57347b8b24597737dd42e192"
+            }
+        ]
+    },
+
+    "Factory emergency exit key": {
+        "id": "5448ba0b4bdc2d02308b456c",
+        "trader": "prapor",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "59e3658a86f7741776641ac4"
+            },
+            {
+            "count": 1,
+            "_tpl": "5af0534a86f7743b6f354284"
+            }
+        ]
+    },
+
+    "Dorm room 220 key": {
+        "id": "5780cfa52459777dfb276eb1",
+        "trader": "skier",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590a3c0a86f774385a33c450"
+            },
+            {
+            "count": 1,
+            "_tpl": "57347c1124597737fb1379e3"
+            }
+        ]
+    },
+
+    "EMERCOM medical unit key": {
+        "id": "5ad5db3786f7743568421cce",
+        "trader": "skier",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "59e3658a86f7741776641ac4"
+            },
+            {
+            "count": 1,
+            "_tpl": "5af0534a86f7743b6f354284"
+            }
+        ]
+    },
+
+    "Health Resort west wing office room 112 key": {
+        "id": "5a0dc95c86f77452440fc675",
+        "trader": "skier",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a3c0a86f774385a33c450"
+            }
+        ]
+    },
+
+    "Dorm room 303 key": {
+        "id": "593aa4be86f77457f56379f8",
+        "trader": "skier",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5734779624597737e04bf329"
+            },
+            {
+            "count": 1,
+            "_tpl": "57347c1124597737fb1379e3"
+            }
+        ]
+    },
+
+    "Health Resort west wing room 216 key": {
+        "id": "5a0ee30786f774023b6ee08f",
+        "trader": "skier",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "59e3647686f774176a362507"
+            },
+            {
+            "count": 1,
+            "_tpl": "5af0534a86f7743b6f354284"
+            },
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            }
+        ]
+    },
+
+    "Health Resort east wing room 306 key": {
+        "id": "5a145d4786f7744cbb6f4a12",
+        "trader": "skier",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "59e3647686f774176a362507"
+            },
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            }
+        ]
+    },
+
+    "Health Resort east wing room 308 key": {
+        "id": "5a145d7b86f7744cbb6f4a13",
+        "trader": "skier",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5af0534a86f7743b6f354284"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a3c0a86f774385a33c450"
+            }
+        ]
+    },
+
+    "Radar station commandant room key": {
+        "id": "62987c658081af308d7558c6",
+        "trader": "skier",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5bc9bc53d4351e00367fbcee"
+            },
+            {
+            "count": 1,
+            "_tpl": "5af0534a86f7743b6f354284"
+            },
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            }
+        ]
+    },
+
+    "Iron gate key": {
+        "id": "63a39f6e64283b5e9c56b289",
+        "trader": "skier",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a3c0a86f774385a33c450"
+            }
+        ]
+    },
+
+    "Chekannaya 15 apartment key": {
+        "id": "63a39fc0af870e651d58e6ae",
+        "trader": "skier",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5bc9bc53d4351e00367fbcee"
+            },
+            {
+            "count": 1,
+            "_tpl": "5af0534a86f7743b6f354284"
+            },
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            }
+        ]
+        },
+        "Dorm room 314 marked key": {
+        "id": "5780cf7f2459777de4559322",
+        "trader": "peacekeeper",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "59e3658a86f7741776641ac4"
+            },
+            {
+            "count": 1,
+            "_tpl": "59e3647686f774176a362507"
+            },
+            {
+            "count": 1,
+            "_tpl": "5bc9bc53d4351e00367fbcee"
+            }
+        ]
+    },
+
+    "Health Resort west wing room 219 key": {
+        "id": "5a13ef0686f7746e5a411744",
+        "trader": "peacekeeper",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a3c0a86f774385a33c450"
+            }
+        ]
+    },
+
+    "Health Resort west wing room 220 key": {
+        "id": "5a0ee34586f774023b6ee092",
+        "trader": "peacekeeper",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            },
+            {
+            "count": 1,
+            "_tpl": "57347c1124597737fb1379e3"
+            }
+        ]
+    },
+
+    "Health Resort east wing room 306 key": {
+        "id": "5a145d4786f7744cbb6f4a12",
+        "trader": "peacekeeper",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "60b0f7057897d47c5b04ab94"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a3c0a86f774385a33c450"
+            }
+        ]
+    },
+
+    "Health Resort east wing room 308 key": {
+        "id": "5a145d7b86f7744cbb6f4a13",
+        "trader": "peacekeeper",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a3c0a86f774385a33c450"
+            }
+        ]
+    },
+
+    "Health Resort east wing room 328 key": {
+        "id": "5a0eee1486f77402aa773226",
+        "trader": "peacekeeper",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "59e3647686f774176a362507"
+            },
+            {
+            "count": 1,
+            "_tpl": "59e3658a86f7741776641ac4"
+            }
+        ]
+    },
+
+    "TerraGroup Labs weapon testing area key": {
+        "id": "5c1e2d1f86f77431e9280bee",
+        "trader": "peacekeeper",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            },
+            {
+            "count": 1,
+            "_tpl": "5734779624597737e04bf329"
+            }
+        ]
+    },
+
+    "RB-ST key": {
+        "id": "5d9f1fa686f774726974a992",
+        "trader": "peacekeeper",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5af0534a86f7743b6f354284"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a3c0a86f774385a33c450"
+            }
+        ]
+    },
+
+    "Car dealership closed section key": {
+        "id": "63a397d3af870e651d58e65b",
+        "trader": "peacekeeper",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5bc9bc53d4351e00367fbcee"
+            },
+            {
+            "count": 1,
+            "_tpl": "59e3647686f774176a362507"
+            },
+            {
+            "count": 1,
+            "_tpl": "59e3658a86f7741776641ac4"
+            }
+        ]
+    },
+
+    "Car dealership director's office room key": {
+        "id": "63a399193901f439517cafb6",
+        "trader": "peacekeeper",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5e2af41e86f774755a234b67"
+            },
+            {
+            "count": 1,
+            "_tpl": "57347c1124597737fb1379e3"
+            }
+        ]
+    },
+
+        "Dorm room 114 key": {
+        "id": "59387a4986f77401cc236e62",
+        "trader": "therapist",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5af0561e86f7745f5f3ad6ac"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a3b0486f7743954552bdb"
+            }
+        ]
+    },
+
+    "Dorm room 206 key": {
+        "id": "5938603e86f77435642354f4",
+        "trader": "therapist",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "57347c93245977448d35f6e3"
+            },
+            {
+            "count": 1,
+            "_tpl": "590c392f86f77444754deb29"
+            }
+        ]
+    },
+
+    "Health Resort west wing room 306 key": {
+        "id": "5a13f46386f7741dd7384b04",
+        "trader": "therapist",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590c5f0d86f77413997acfab"
+            },
+            {
+            "count": 1,
+            "_tpl": "590c595c86f7747884343ad7"
+            }
+        ]
+    },
+
+    "Cottage back door key": {
+        "id": "5a0eb6ac86f7743124037a28",
+        "trader": "therapist",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590a358486f77429692b2790"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a373286f774287540368b"
+            },
+            {
+            "count": 1,
+            "_tpl": "590c621186f774138d11ea29"
+            }
+        ]
+    },
+
+    "RB-KSM key": {
+        "id": "5d947d4e86f774447b415895",
+        "trader": "therapist",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590c2e1186f77425357b6124"
+            },
+            {
+            "count": 1,
+            "_tpl": "590c5bbd86f774785762df04"
+            }
+        ]
+    },
+
+    "RB-SMP key": {
+        "id": "5d947d3886f774447b415893",
+        "trader": "therapist",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590c37d286f77443be3d7827"
+            },
+            {
+            "count": 1,
+            "_tpl": "56742c324bdc2d150f8b456d"
+            }
+        ]
+    },
+
+    "X-ray room key": {
+        "id": "64ccc246ff54fb38131acf29",
+        "trader": "therapist",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590c595c86f7747884343ad7"
+            },
+            {
+            "count": 1,
+            "_tpl": "590c2b4386f77425357b6123"
+            }
+        ]
+    },
+
+    "Tarcone Director's office key": {
+        "id": "5780d0532459777a5108b9a2",
+        "trader": "mechanic",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590a358486f77429692b2790"
+            },
+            {
+            "count": 1,
+            "_tpl": "590c35a486f774273531c822"
+            }
+        ]
+    },
+
+    "Health Resort office key with a blue tape": {
+        "id": "5eff09cd30a7dc22fd1ddfed",
+        "trader": "mechanic",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "57347c2e24597744902c94a1"
+            },
+            {
+            "count": 1,
+            "_tpl": "590c5bbd86f774785762df04"
+            }
+        ]
+    },
+
+    "Operating room key": {
+        "id": "62987da96188c076bc0d8c51",
+        "trader": "mechanic",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590c5f0d86f77413997acfab"
+            },
+            {
+            "count": 1,
+            "_tpl": "590c595c86f7747884343ad7"
+            }
+        ]
+    },
+
+    "RB-ST key": {
+        "id": "5d9f1fa686f774726974a992",
+        "trader": "mechanic",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590a3c0a86f774385a33c450"
+            },
+            {
+            "count": 1,
+            "_tpl": "5af0534a86f7743b6f354284"
+            }
+        ]
+    },
+
+    "Pinewood hotel room 215 key": {
+        "id": "63a39f08cd6db0635c197600",
+        "trader": "mechanic",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590c2c9c86f774245b1f03f2"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a373286f774287540368b"
+            }
+        ]
+    },
+
+    "Concordia security room key": {
+        "id": "63a39c7964283b5e9c56b280",
+        "trader": "mechanic",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "57347c1124597737fb1379e3"
+            },
+            {
+            "count": 1,
+            "_tpl": "5af0548586f7743a532b7e99"
+            }
+        ]
+    },
+
+    "OLI logistics department office key": {
+        "id": "5ad5cfbd86f7742c825d6104",
+        "trader": "ragman",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590c5bbd86f774785762df04"
+            },
+            {
+            "count": 1,
+            "_tpl": "5d1b309586f77425227d1676"
+            }
+        ]
+    },
+
+    "Goshan cash register key": {
+        "id": "5ad7247386f7747487619dc3",
+        "trader": "ragman",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5d02778e86f774203e7dedbe"
+            },
+            {
+            "count": 1,
+            "_tpl": "5c052e6986f7746b207bc3c9"
+            }
+        ]
+    },
+
+    "RB-ORB1 key": {
+        "id": "5d80ccac86f77470841ff452",
+        "trader": "ragman",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5af04b6486f774195a3ebb49"
+            },
+            {
+            "count": 1,
+            "_tpl": "57347c1124597737fb1379e3"
+            }
+        ]
+    },
+
+    "RB-ORB2 key": {
+        "id": "5d80ccdd86f77474f7575e02",
+        "trader": "ragman",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590a358486f77429692b2790"
+            },
+            {
+            "count": 1,
+            "_tpl": "57347c2e24597744902c94a1"
+            }
+        ]
+    },
+
+    "RB-ORB3 key": {
+        "id": "5d80cd1a86f77402aa362f42",
+        "trader": "ragman",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590c621186f774138d11ea29"
+            },
+            {
+            "count": 1,
+            "_tpl": "590c37d286f77443be3d7827"
+            }
+        ]
+    },
+
+    "Ushanka ear flap hat": {
+        "id": "59e7708286f7742cbd762753",
+        "trader": "ragman",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "59e35cbb86f7741778269d83"
+            }
+        ]
+    },
+
+    "RB-OB key": {
+        "id": "5d80c6c586f77440351beef1",
+        "trader": "ragman",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "590a3b0486f7743954552bdb"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a391c86f774385a33c404"
+            }
+        ]
+    }
+}
