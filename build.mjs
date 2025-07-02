@@ -29,11 +29,10 @@
  * @version v1.0.0
  */
 
+import os from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import fs from "fs-extra";
-import os from "os";
-import path from "path";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 import ignore from "ignore";
 import archiver from "archiver";
 import winston from "winston";
@@ -87,7 +86,7 @@ async function main() {
     const currentDir = getCurrentDirectory();
 
     // Defining at this scope because we need to use it in the finally block.
-    let tempDir, projectDir, bepinexDir;
+    let projectDir;
 
     try {
         // Load the .buildignore file to set up an ignore handler for the build process.
@@ -98,7 +97,6 @@ async function main() {
 
         // Create a descriptive name for the mod package.
         const projectName = createProjectName(packageJson);
-        const projectZip = createProjectName(packageJson, true);
         logger.log("success", `Project name created: ${projectName}`);
 
         // Remove the old distribution directory and create a fresh one.
@@ -106,44 +104,37 @@ async function main() {
         logger.log("info", "Distribution directory successfully cleaned.");
 
         // Create a temporary working directory to perform the build operations.
-        [tempDir, projectDir, bepinexDir] = await createTemporaryDirectoryWithProjectName(projectName);
+        projectDir = await createTemporaryDirectoryWithProjectName(projectName);
         logger.log("success", "Temporary working directory successfully created.");
-        logger.log("info", tempDir);
+        logger.log("info", projectDir);
 
         // Copy files to the temporary directory while respecting the .buildignore rules.
         logger.log("info", "Beginning copy operation using .buildignore file...");
         await copyFiles(currentDir, projectDir, buildIgnorePatterns);
         logger.log("success", "Files successfully copied to temporary directory.");
 
-        // Copy bepinex plugin to temporary path
-        logger.log("info", "Beginning copy of BepInEx plugin...");
-        const dllPath = path.join("BepInEx", "bin", "Release", "DrakiaXYZ-GildedKeyStorage.dll");
-        const bepinexDllPath = path.join(bepinexDir, "DrakiaXYZ-GildedKeyStorage.dll");
-        await fs.copyFile(dllPath, bepinexDllPath);
-        logger.log("success", "BepInEx plugin copied to temporary directory.");
-
         // Create a zip archive of the project files.
         logger.log("info", "Beginning folder compression...");
-        const zipFilePath = path.join(path.dirname(tempDir), `${projectZip}.zip`);
-        await createZipFile(tempDir, zipFilePath, "");
+        const zipFilePath = path.join(path.dirname(projectDir), `${projectName}.zip`);
+        await createZipFile(projectDir, zipFilePath, "user/mods/" + projectName);
         logger.log("success", "Archive successfully created.");
         logger.log("info", zipFilePath);
 
         // Move the zip file inside of the project directory, within the temporary working directory.
-        const zipFileInProjectDir = path.join(tempDir, `${projectZip}.zip`);
+        const zipFileInProjectDir = path.join(projectDir, `${projectName}.zip`);
         await fs.move(zipFilePath, zipFileInProjectDir);
         logger.log("success", "Archive successfully moved.");
         logger.log("info", zipFileInProjectDir);
 
         // Move the temporary directory into the distribution directory.
-        await fs.move(tempDir, distDir);
+        await fs.move(projectDir, distDir);
         logger.log("success", "Temporary directory successfully moved into project distribution directory.");
 
         // Log the success message. Write out the path to the mod package.
         logger.log("success", "------------------------------------");
         logger.log("success", "Build script completed successfully!");
         logger.log("success", "Your mod package has been created in the 'dist' directory:");
-        logger.log("success", `  ${path.relative(process.cwd(), path.join(distDir, `${projectZip}.zip`))}`);
+        logger.log("success", `/${path.relative(process.cwd(), path.join(distDir, `${projectName}.zip`))}`);
         logger.log("success", "------------------------------------");
         if (!verbose) {
             logger.log("success", "To see a detailed build log, use `npm run buildinfo`.");
@@ -173,7 +164,7 @@ async function main() {
  * @returns {string} The absolute path of the current working directory.
  */
 function getCurrentDirectory() {
-    return dirname(fileURLToPath(import.meta.url));
+    return path.dirname(fileURLToPath(import.meta.url));
 }
 
 /**
@@ -222,27 +213,20 @@ async function loadPackageJson(currentDir) {
 
 /**
  * Constructs a descriptive name for the mod package using details from the `package.json` file. The name is created by
- * concatenating the author, project name, and optionally version.
- * This name is used as the base name for the temporary working directory and the final ZIP archive, helping to
+ * concatenating the project name, version, and a timestamp, resulting in a unique and descriptive file name for each
+ * build. This name is used as the base name for the temporary working directory and the final ZIP archive, helping to
  * identify different versions of the mod package easily.
  *
  * @param {Object} packageJson - A JSON object containing the contents of the `package.json` file.
- * @param {boolean} includeVersion - Whether to include the version in the resulting name
  * @returns {string} A string representing the constructed project name.
  */
-function createProjectName(packageJson, includeVersion = false) {
-    // Only allow a-z, 0-9, underscore and dash
-    const author = packageJson.author.replace(/[^A-Za-z0-9_-]/g, "");
-    const name = packageJson.name.replace(/[^A-Za-z0-9_-]/g, "");
-    const version = packageJson.version;
+function createProjectName(packageJson) {
+    // Remove any non-alphanumeric characters from the author and name.
+    const author = packageJson.author.replace(/\W/g, "");
+    const name = packageJson.name.replace(/\W/g, "");
 
     // Ensure the name is lowercase, as per the package.json specification.
-    if (includeVersion)
-    {
-        return `${author}-${name}-${version}`;
-    }
-
-    return `${author}-${name}`;
+    return `${author}-${name}`.toLowerCase();
 }
 
 /**
@@ -274,12 +258,10 @@ async function createTemporaryDirectoryWithProjectName(projectName) {
     const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "spt-mod-build-"));
 
     // Create a subdirectory within the temporary directory using the project name for this specific build.
-    const projectDir = path.join(tempDir, 'user', 'mods', projectName);
+    const projectDir = path.join(tempDir, projectName);
     await fs.ensureDir(projectDir);
-    const bepinexDir = path.join(tempDir, 'BepInEx', 'plugins');
-    await fs.ensureDir(bepinexDir);
 
-    return [tempDir, projectDir, bepinexDir];
+    return projectDir;
 }
 
 /**

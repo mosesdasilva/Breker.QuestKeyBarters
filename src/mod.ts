@@ -44,7 +44,7 @@ class Mod implements IPostDBLoadMod {
     //also why did write this after "this.pushSupportiveBarters(dbTraders);" and not before?
     pushSupportiveBarters(dbTraders: Record<string, ITrader>):void{
         for (const barter of Object.keys(barters)){
-            this.pushToTrader(barters[barter], barter[barter].id, dbTraders); 
+            this.pushToTrader(barters[barter], barters[barter].id, dbTraders); 
         }
     }
 
@@ -59,6 +59,37 @@ class Mod implements IPostDBLoadMod {
             jaeger: Traders.JAEGER,
             ragman: Traders.RAGMAN
         };
+
+        let traderToPush = barterConfig.trader;
+        for (const [key, val] of Object.entries(traderIDs))// explain me this line, have no idia what is actually does
+        {
+            if (key === barterConfig.trader){
+                traderToPush = val; 
+            }
+        }
+        const trader = dbTraders[traderToPush];
+
+        trader.assort.items.push({
+            _id: itemID,
+            _tpl: itemID,
+            parentId: "hideout",
+            slotId: "hideout",
+            upd:
+            {
+                UnlimitedCount: barterConfig.unlimited_stock,
+                StackObjectsCount: barterConfig.stock_amout
+            }
+        });
+
+        const barterTrade: any = [];
+        const configBarters = barterConfig.barters;
+
+        for (const barter in configBarters){
+            barterTrade.push(configBarters[barter]);
+        }
+
+        trader.assort.barter_scheme[itemID] = [barterTrade];
+        trader.assort.loyal_level_items[itemID] = barterConfig.trader_loyalty_level;      
     }
 }
 
