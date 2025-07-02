@@ -44,12 +44,13 @@ class Mod implements IPostDBLoadMod {
     //also why did write this after "this.pushSupportiveBarters(dbTraders);" and not before?
     pushSupportiveBarters(dbTraders: Record<string, ITrader>):void{
         for (const barter of Object.keys(barters)){
-            this.pushToTrader(barters[barter], barter[barter].id, dbTraders); 
+            this.pushToTrader(barters[barter], barters[barter].id, dbTraders); 
         }
     }
 
     //why is this declared after the code block above and not before???
-    pushToTrader(barterConfig, itemID:string, dbTraders: Record<string, ITrader>){
+    //need explantion for this whole block below in plain english, word for word, dont know why I need this
+    pushToTrader(barterConfig, itemID:string, dbTraders: Record<string, ITrader>,){ 
         const traderIDs = {
             mechanic: Traders.MECHANIC,
             skier: Traders.SKIER,
@@ -59,6 +60,37 @@ class Mod implements IPostDBLoadMod {
             jaeger: Traders.JAEGER,
             ragman: Traders.RAGMAN
         };
+
+        let traderToPush = barterConfig.trader;
+        for (const [key, val] of Object.entries(traderIDs))
+        {
+            if (key === barterConfig.trader){
+                traderToPush = val;
+            }
+        }
+        const trader = dbTraders[traderToPush];
+
+        trader.assort.items.push({
+            _id: itemID,
+            _tpl: itemID,
+            parentId: "hideout",
+            slotId: "hideout",
+            upd:
+            {
+                UnlimitedCount: barterConfig.unlimited_stock,
+                StackObjectsCount: barterConfig.stock_amount
+            }
+        });
+
+        const barterTrade: any = [];
+        const configBarters = barterConfig.barter;
+
+        for (const barter in configBarters){
+            barterTrade.push(configBarters[barter]);
+        }
+
+        trader.assort.barter_scheme[itemID] = [barterTrade];
+        trader.assort.loyal_level_items[itemID] = barterConfig.trader_loyalty_level;  
     }
 }
 
