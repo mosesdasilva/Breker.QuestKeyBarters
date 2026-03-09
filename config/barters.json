@@ -356,7 +356,7 @@
         ]
     },
 
-    "Health Resort east wing room 306 key": {
+    "Health Resort east wing room 306 key 2": {
         "id": "5a145d4786f7744cbb6f4a12",
         "trader": "peacekeeper",
         "trader_loyalty_level": 1,
@@ -375,7 +375,7 @@
         ]
     },
 
-    "Health Resort east wing room 308 key": {
+    "Health Resort east wing room 308 key 2": {
         "id": "5a145d7b86f7744cbb6f4a13",
         "trader": "peacekeeper",
         "trader_loyalty_level": 1,
@@ -630,7 +630,7 @@
         ]
     },
 
-    "Tarcone Director's office key": {
+    "Tarcone Director's office key 2": {
         "id": "5780d0532459777a5108b9a2",
         "trader": "mechanic",
         "trader_loyalty_level": 1,
@@ -687,7 +687,7 @@
         ]
     },
 
-    "RB-ST key": {
+    "RB-ST key 2": {
         "id": "5d9f1fa686f774726974a992",
         "trader": "mechanic",
         "trader_loyalty_level": 1,
@@ -869,6 +869,102 @@
             {
             "count": 1,
             "_tpl": "590a391c86f774385a33c404"
+            }
+        ]
+    },
+
+    "Abandoned factory marked key": {
+        "id": "63a3a93f8a56922e82001f5d",
+        "trader": "jaeger",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5c05300686f7746dce784e5d"
+            },
+            {
+            "count": 1,
+            "_tpl": "590c645c86f77412b01304d9"
+            },
+            {
+            "count": 1,
+            "_tpl": "5af0534a86f7743b6f354284"
+            }
+        ]
+    },
+
+    "Mysterious room marked key": {
+        "id": "64ccc25f95763a1ae376e447",
+        "trader": "jaeger",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5c12620d86f7743f8b198b72"
+            },
+            {
+            "count": 1,
+            "_tpl": "5c052fb986f7746b2101e909"
+            },
+             {
+            "count": 1,
+            "_tpl": "5bc9bc53d4351e00367fbcee"
+            },
+            {
+            "count": 1,
+            "_tpl": "5d1b327086f7742525194449"
+            }
+        ]
+    },
+
+    "TerraGroup storage room keycard": {
+        "id": "66acd6702b17692df20144c0",
+        "trader": "jaeger",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "5c0530ee86f774697952d952"
+            },
+            {
+            "count": 1,
+            "_tpl": "59faff1d86f7746c51718c9c"
+            },
+             {
+            "count": 1,
+            "_tpl": "5c12620d86f7743f8b198b72"
+            }
+        ]
+    },
+
+    "ZB-014 key": {
+        "id": "591afe0186f77431bd616a11",
+        "trader": "jaeger",
+        "trader_loyalty_level": 1,
+        "unlimited_stock": false,
+        "stock_amount": 1,
+
+        "barter": [
+            {
+            "count": 1,
+            "_tpl": "573474f924597738002c6174"
+            },
+            {
+            "count": 1,
+            "_tpl": "590a3c0a86f774385a33c450"
+            },
+             {
+            "count": 1,
+            "_tpl": "57347c1124597737fb1379e3"
             }
         ]
     }
