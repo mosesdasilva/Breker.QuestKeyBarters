@@ -64,3 +64,10 @@ The ZIP output, located in the `dist` directory, contains all required files. En
 With this setup, you're ready to begin modding with SPT-AKI. If you run into any trouble be sure to check out the [modding documentation on the hub](https://hub.sp-tarkov.com/doc/lexicon/66-modding/). If you really get stuck feel free to join us in the [#mods-development](https://discord.com/channels/875684761291599922/875803116409323562) official Discord channel.
 
 Build something awesome!
+
+## **Recent Changes**
+
+- Fixed duplicate barter offers for the same key on the same trader by generating unique, valid Mongo-style offer IDs.
+- Added tests to prevent regressions around duplicate offer IDs and invalid ID formats.
+- Updated Dorm room 203 key barter to a near-base-price trade (`1x Metal cutting scissors + 3x CPU fan`).
+- Added a config-focused test that validates Dorm 203 barter value remains within 500 roubles of base key price.
