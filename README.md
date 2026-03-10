@@ -1,73 +1,71 @@
-# Welcome to the SPT-AKI Modding Project
+# Breker's Quest Key Barters
 
-This project is designed to streamline the initial setup process for building and creating mods in the SPT-AKI environment. Follow this guide to set up your environment efficiently.
+Adds practical trader barters for quest-focused keys so progression is less dependent on RNG key spawns.
 
-## **Table of Contents**
-- [NodeJS Setup](#nodejs-setup)
-- [IDE Setup](#ide-setup)
-- [Workspace Configuration](#workspace-configuration)
-- [Environment Setup](#environment-setup)
-- [Essential Concepts](#essential-concepts)
-- [Coding Guidelines](#coding-guidelines)
-- [Distribution Guidelines](#distribution-guidelines)
+## What This Mod Does
 
-## **NodeJS Setup**
+- Injects additional key barter offers into trader assortments on server load.
+- Targets early-access and quest-relevant keys across multiple traders.
+- Keeps offers stock-limited (not unlimited) to preserve progression pacing.
+- Supports duplicate key entries safely by generating unique valid offer IDs when needed.
 
-Before you begin, ensure to install NodeJS version `v18.15.0`, which has been tested thoroughly with our mod templates and build scripts. Download it from the [official NodeJS website](https://nodejs.org/).
+## Current Coverage
 
-After installation, it's advised to reboot your system.
+- `49` barter entries total.
+- Trader distribution:
+  - Prapor: `5`
+  - Skier: `10`
+  - Peacekeeper: `10`
+  - Therapist: `7`
+  - Mechanic: `6`
+  - Ragman: `7`
+  - Jaeger: `4`
 
-## **IDE Setup**
+Main config file: `config/barters.json`
 
-For this project, you can work with either [VSCodium](https://vscodium.com/) or [VSCode](https://code.visualstudio.com/). However, we strongly recommend using VSCode, as all development and testing have been carried out using this IDE, ensuring a smoother experience and compatibility with the project setups. Either way, we have a prepared a workspace file to assist you in setting up your environment.
+## Compatibility
 
-## **Workspace Configuration**
+- SPT version: `~3.11.0`
+- Mod type: Server-side (`postDBLoad` injection)
 
-With NodeJS and your chosen IDE ready, initiate the `mod.code-workspace` file using your IDE:
+## Installation
 
-> File -> Open Workspace from File...
+1. Download or clone this mod.
+2. Place the mod folder into your SPT user mods directory.
+3. Start the SPT server.
 
-Upon project loading, consider installing recommended plugins like the ESLint plugin.
+Expected startup log:
+`[Breker's Quest Key Barters] : Mod Loading`
 
-## **Environment Setup**
+## Configuration
 
-An automated task is available to configure your environment for Typescript utilization:
+All barter definitions are in `config/barters.json`.
 
-> Terminal -> Run Task... -> Show All Tasks... -> npm: install
+Each entry uses this structure:
 
-Note: Preserve the `node_modules` folder as it contains necessary dependencies for Typescript and other functionalities.
+```json
+"Some key name": {
+  "id": "item_tpl_id",
+  "trader": "prapor",
+  "trader_loyalty_level": 1,
+  "unlimited_stock": false,
+  "stock_amount": 1,
+  "barter": [
+    { "count": 1, "_tpl": "required_item_tpl_1" },
+    { "count": 2, "_tpl": "required_item_tpl_2" }
+  ]
+}
+```
 
-## **Essential Concepts**
+### Field Notes
 
-Prioritize understanding Dependency Injection and Inversion of Control, the architectural principles SPT-AKI adopts. Comprehensive guidelines will be available on the hub upon release.
+- `id`: Item tpl of the item being sold (usually the key).
+- `trader`: Trader name (`prapor`, `skier`, `peacekeeper`, `therapist`, `mechanic`, `ragman`, `jaeger`) or direct trader ID.
+- `trader_loyalty_level`: Required trader level.
+- `unlimited_stock`: `true` for infinite restock, `false` for limited stock.
+- `stock_amount`: Quantity per reset.
+- `barter`: Required items and counts.
 
-Some resources to get you started:
- - [A quick intro to Dependency Injection](https://www.freecodecamp.org/news/a-quick-intro-to-dependency-injection-what-it-is-and-when-to-use-it-7578c84fa88f/)
- - [Understanding Inversion of Control (IoC) Principle](https://medium.com/@amitkma/understanding-inversion-of-control-ioc-principle-163b1dc97454)
+## License
 
-## **Coding Guidelines**
-
-Focus your mod development around the `mod.ts` file. In the `package.json` file, only alter these properties: `"name"`, `"version"`, `"license"`, `"author"`, and `"akiVersion"`. 
-
-New to Typescript? Find comprehensive documentation on the [official website](https://www.typescriptlang.org/docs/).
-
-## **Distribution Guidelines**
-
-Automated tasks are set up to bundle all necessary files for your mod to function in SPT-AKI:
-
-> Terminal -> Run Task... -> Show All Tasks... -> npm: build
-
-The ZIP output, located in the `dist` directory, contains all required files. Ensure all files are included and modify the `.buildignore` file as needed. This ZIP file is your uploadable asset for the hub.
-
-## **Conclusion**
-
-With this setup, you're ready to begin modding with SPT-AKI. If you run into any trouble be sure to check out the [modding documentation on the hub](https://hub.sp-tarkov.com/doc/lexicon/66-modding/). If you really get stuck feel free to join us in the [#mods-development](https://discord.com/channels/875684761291599922/875803116409323562) official Discord channel.
-
-Build something awesome!
-
-## **Recent Changes**
-
-- Fixed duplicate barter offers for the same key on the same trader by generating unique, valid Mongo-style offer IDs.
-- Added tests to prevent regressions around duplicate offer IDs and invalid ID formats.
-- Updated Dorm room 203 key barter to a near-base-price trade (`1x Metal cutting scissors + 3x CPU fan`).
-- Added a config-focused test that validates Dorm 203 barter value remains within 500 roubles of base key price.
+MIT (see `LICENSE`)
