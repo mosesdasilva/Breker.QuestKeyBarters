@@ -72,7 +72,7 @@ describe("Quest Key Barters mod", () => {
 
     it("pushToTrader adds assort item, barter scheme, and loyalty level", () => {
         const dbTraders = createDbTraders();
-        const itemId = "test-item-id";
+        const itemId = "5938504186f7740991483f30";
         const barterConfig = {
             trader: "prapor",
             trader_loyalty_level: 2,
@@ -86,20 +86,25 @@ describe("Quest Key Barters mod", () => {
 
         mod.pushToTrader(barterConfig, itemId, dbTraders as never);
 
-        expect(dbTraders[Traders.PRAPOR].assort.items).toEqual([
-            {
-                _id: itemId,
-                _tpl: itemId,
-                parentId: "hideout",
-                slotId: "hideout",
-                upd: {
-                    UnlimitedCount: true,
-                    StackObjectsCount: 99,
-                },
-            },
-        ]);
-        expect(dbTraders[Traders.PRAPOR].assort.barter_scheme[itemId]).toEqual([barterConfig.barter]);
-        expect(dbTraders[Traders.PRAPOR].assort.loyal_level_items[itemId]).toBe(2);
+        expect(dbTraders[Traders.PRAPOR].assort.items).toHaveLength(1);
+        const addedItem = dbTraders[Traders.PRAPOR].assort.items[0] as {
+            _id: string;
+            _tpl: string;
+            parentId: string;
+            slotId: string;
+            upd: { UnlimitedCount: boolean; StackObjectsCount: number };
+        };
+
+        expect(addedItem._id).toBe(itemId);
+        expect(addedItem._tpl).toBe(itemId);
+        expect(addedItem.parentId).toBe("hideout");
+        expect(addedItem.slotId).toBe("hideout");
+        expect(addedItem.upd).toEqual({
+            UnlimitedCount: true,
+            StackObjectsCount: 99,
+        });
+        expect(dbTraders[Traders.PRAPOR].assort.barter_scheme[addedItem._id]).toEqual([barterConfig.barter]);
+        expect(dbTraders[Traders.PRAPOR].assort.loyal_level_items[addedItem._id]).toBe(2);
     });
 
     it("pushToTrader supports direct trader IDs when no named mapping exists", () => {
@@ -116,8 +121,45 @@ describe("Quest Key Barters mod", () => {
         mod.pushToTrader(barterConfig, itemId, dbTraders as never);
 
         expect(dbTraders.CUSTOM_TRADER.assort.items).toHaveLength(1);
-        expect(dbTraders.CUSTOM_TRADER.assort.barter_scheme[itemId]).toEqual([barterConfig.barter]);
-        expect(dbTraders.CUSTOM_TRADER.assort.loyal_level_items[itemId]).toBe(1);
+        const addedItem = dbTraders.CUSTOM_TRADER.assort.items[0] as { _id: string };
+        expect(dbTraders.CUSTOM_TRADER.assort.barter_scheme[addedItem._id]).toEqual([barterConfig.barter]);
+        expect(dbTraders.CUSTOM_TRADER.assort.loyal_level_items[addedItem._id]).toBe(1);
+    });
+
+    it("pushToTrader creates unique offer IDs for duplicate item IDs on the same trader", () => {
+        const dbTraders = createDbTraders();
+        const itemId = "5938504186f7740991483f30";
+        const firstBarterConfig = {
+            trader: "prapor",
+            trader_loyalty_level: 1,
+            unlimited_stock: false,
+            stock_amount: 1,
+            barter: [{ count: 1, _tpl: "tpl-a" }],
+        };
+        const secondBarterConfig = {
+            trader: "prapor",
+            trader_loyalty_level: 2,
+            unlimited_stock: false,
+            stock_amount: 1,
+            barter: [{ count: 2, _tpl: "tpl-b" }],
+        };
+
+        mod.pushToTrader(firstBarterConfig, itemId, dbTraders as never);
+        mod.pushToTrader(secondBarterConfig, itemId, dbTraders as never);
+
+        const traderAssort = dbTraders[Traders.PRAPOR].assort;
+        expect(traderAssort.items).toHaveLength(2);
+
+        const firstOfferId = (traderAssort.items[0] as { _id: string })._id;
+        const secondOfferId = (traderAssort.items[1] as { _id: string })._id;
+
+        expect(firstOfferId).not.toBe(secondOfferId);
+        expect(firstOfferId).toMatch(/^[a-f0-9]{24}$/i);
+        expect(secondOfferId).toMatch(/^[a-f0-9]{24}$/i);
+        expect(traderAssort.barter_scheme[firstOfferId]).toEqual([firstBarterConfig.barter]);
+        expect(traderAssort.barter_scheme[secondOfferId]).toEqual([secondBarterConfig.barter]);
+        expect(traderAssort.loyal_level_items[firstOfferId]).toBe(1);
+        expect(traderAssort.loyal_level_items[secondOfferId]).toBe(2);
     });
 
     it("pushSupportiveBarters iterates over every barter config entry", () => {

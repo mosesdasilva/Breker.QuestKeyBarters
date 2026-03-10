@@ -14,6 +14,7 @@ import barters from "../config/barters.json";
 
 
 class Mod implements IPostDBLoadMod {
+    private readonly mongoIdRegex = /^[a-f0-9]{24}$/i;
 
     
     logger: ILogger
@@ -57,9 +58,10 @@ class Mod implements IPostDBLoadMod {
             }
         }
         const trader = dbTraders[traderToPush];
+        const offerId = this.getUniqueOfferId(trader, itemID);
 
         trader.assort.items.push({
-            _id: itemID,
+            _id: offerId,
             _tpl: itemID,
             parentId: "hideout",
             slotId: "hideout",
@@ -77,8 +79,46 @@ class Mod implements IPostDBLoadMod {
             barterTrade.push(configBarters[barter]);
         }
 
-        trader.assort.barter_scheme[itemID] = [barterTrade];
-        trader.assort.loyal_level_items[itemID] = barterConfig.trader_loyalty_level;  
+        trader.assort.barter_scheme[offerId] = [barterTrade];
+        trader.assort.loyal_level_items[offerId] = barterConfig.trader_loyalty_level;  
+    }
+
+    private getUniqueOfferId(trader: ITrader, itemID: string): string
+    {
+        if (this.mongoIdRegex.test(itemID) && !this.offerIdExists(trader, itemID))
+        {
+            return itemID;
+        }
+
+        let candidate = this.generateMongoId();
+        while (this.offerIdExists(trader, candidate))
+        {
+            candidate = this.generateMongoId();
+        }
+
+        return candidate;
+    }
+
+    private offerIdExists(trader: ITrader, offerId: string): boolean
+    {
+        const itemIdTaken = trader.assort.items.some((item: { _id: string }) => item._id === offerId);
+        const barterIdTaken = trader.assort.barter_scheme[offerId] !== undefined;
+        const loyaltyIdTaken = trader.assort.loyal_level_items[offerId] !== undefined;
+
+        return itemIdTaken || barterIdTaken || loyaltyIdTaken;
+    }
+
+    private generateMongoId(): string
+    {
+        let id = "";
+        const hexChars = "0123456789abcdef";
+
+        for (let i = 0; i < 24; i++)
+        {
+            id += hexChars[Math.floor(Math.random() * hexChars.length)];
+        }
+
+        return id;
     }
 }
 
