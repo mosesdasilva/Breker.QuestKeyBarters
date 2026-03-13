@@ -64,6 +64,7 @@ Flow:
 - Ask before large refactors, release-pipeline changes, or broad gameplay rebalance changes.
 - When changing barter data, keep progression intent intact: helpful, limited, and not overpowered.
 - Do not treat `dist/` as source of truth unless release work is explicitly requested.
+- Always include `package.json` in built mod packages; for SPT mods it is required installation metadata, not development-only content.
 
 ## Workflow Expectations
 - Work in an XP-style rhythm: small safe changes, frequent validation, and clear checkpoints.
