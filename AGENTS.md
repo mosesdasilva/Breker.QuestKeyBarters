@@ -72,6 +72,12 @@ Flow:
 - When a task reaches a meaningful checkpoint, suggest a commit instead of silently accumulating a large batch.
 - Prefer early and frequent commits for significant changes, but ask the user before committing unless they already asked for one.
 - Keep commits scoped to a single logical change when practical.
+- Use commits as frequent local checkpoints during active work.
+- Suggest commits at meaningful checkpoints: passing tests, completed bug fixes, finished doc updates, or safe refactor slices.
+- Prefer small local commits during the session, then push when the work is stable enough to serve as a useful remote backup or sync point.
+- Default push timing is end of session, end of day, or after a known-good checkpoint.
+- If a risky change is about to start, consider suggesting a push of the last known-good state first.
+- Do not assume every local commit should be pushed immediately.
 
 ## Validation Workflow
 Default:
