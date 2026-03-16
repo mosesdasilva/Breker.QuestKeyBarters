@@ -74,7 +74,6 @@ Flow:
 - Prefer TDD when practical: add or adjust a test near the behavior change, then implement the change.
 - Treat the user as an active pair-programming partner: surface assumptions, tradeoffs, and unclear repo behavior early.
 - Name branches by change type and intent, not by tool provenance; prefer slash-based names like `fix/...`, `refactor/...`, `feature/...`, or `chore/...`.
-- Do not use `codex` in branch names.
 - When a task reaches a meaningful checkpoint, suggest a commit instead of silently accumulating a large batch.
 - Prefer early and frequent commits for significant changes, but ask the user before committing unless they already asked for one.
 - Keep commits scoped to a single logical change when practical.
@@ -107,6 +106,7 @@ Packaging check, only when release work is requested:
 - `npm run build`
 - confirm the build includes `package.json`, `README.md`, `src/mod.ts`, and `config/`
 - keep the generated zip as a release artifact, but for local manual installs copy from the built folder contents in `dist/`, not from the zip, unless the task is specifically to verify archive extraction/install behavior
+- for local manual installs or updates, delete the existing `SPT/user/mods/breker-questkeybarters` folder first so the install is always a fresh copy
 
 A task is not done until:
 - relevant tests pass

@@ -54,12 +54,28 @@ class Mod implements IPostDBLoadMod {
         this.pushSupportiveBarters(dbTraders);
     }
     pushSupportiveBarters(dbTraders: Record<string, ITrader>):void{
-        for (const barter of Object.values(barters)){
-            this.pushToTrader(barter, barter.id, dbTraders); 
+        for (const [barterName, barter] of Object.entries(barters)){
+            this.pushToTrader(barter, barter.id, dbTraders, barterName); 
         }
     }
 
-    pushToTrader(barterConfig: BarterConfig, itemID:string, dbTraders: Record<string, ITrader>,){ 
+    pushToTrader(
+        barterConfig: BarterConfig,
+        itemID: string,
+        dbTraders: Record<string, ITrader>,
+        barterName?: string,
+    ){ 
+        const validationErrors = this.validateBarterConfig(barterConfig);
+        if (validationErrors.length > 0)
+        {
+            const configLabel = barterName ?? itemID;
+            this.logger.log(
+                `[${this.modName}] : Skipping invalid barter config '${configLabel}': ${validationErrors.join("; ")}`,
+                LogTextColor.RED,
+            );
+            return;
+        }
+
         const traderIDs = {
             mechanic: Traders.MECHANIC,
             skier: Traders.SKIER,
@@ -105,6 +121,57 @@ class Mod implements IPostDBLoadMod {
 
         trader.assort.barter_scheme[offerId] = [barterTrade];
         trader.assort.loyal_level_items[offerId] = barterConfig.trader_loyalty_level;  
+    }
+
+    private validateBarterConfig(barterConfig: BarterConfig): string[]
+    {
+        const errors: string[] = [];
+
+        if (!this.isNonEmptyString(barterConfig.id))
+        {
+            errors.push("id must be a non-empty string");
+        }
+
+        if (!this.isNonEmptyString(barterConfig.trader))
+        {
+            errors.push("trader must be a non-empty string");
+        }
+
+        if (!Number.isInteger(barterConfig.trader_loyalty_level) || barterConfig.trader_loyalty_level < 1)
+        {
+            errors.push("trader_loyalty_level must be a positive integer");
+        }
+
+        if (typeof barterConfig.unlimited_stock !== "boolean")
+        {
+            errors.push("unlimited_stock must be a boolean");
+        }
+
+        if (!Number.isInteger(barterConfig.stock_amount) || barterConfig.stock_amount < 1)
+        {
+            errors.push("stock_amount must be a positive integer");
+        }
+
+        if (!Array.isArray(barterConfig.barter) || barterConfig.barter.length === 0)
+        {
+            errors.push("barter must be a non-empty array");
+            return errors;
+        }
+
+        for (const [index, barterItem] of barterConfig.barter.entries())
+        {
+            if (!Number.isFinite(barterItem?.count) || barterItem.count <= 0)
+            {
+                errors.push(`barter[${index}].count must be greater than 0`);
+            }
+
+            if (!this.isNonEmptyString(barterItem?._tpl))
+            {
+                errors.push(`barter[${index}]._tpl must be a non-empty string`);
+            }
+        }
+
+        return errors;
     }
 
     private getUniqueOfferId(trader: ITrader, itemID: string): string
@@ -170,6 +237,11 @@ class Mod implements IPostDBLoadMod {
         }
 
         return undefined;
+    }
+
+    private isNonEmptyString(value: unknown): value is string
+    {
+        return typeof value === "string" && value.trim().length > 0;
     }
 }
 

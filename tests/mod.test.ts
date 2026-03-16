@@ -161,6 +161,31 @@ describe("Quest Key Barters mod", () => {
         }
     });
 
+    it("pushToTrader logs and skips invalid barter configs before mutating assorts", () => {
+        const dbTraders = createDbTraders();
+        mod.logger = { log: vi.fn() } as never;
+        const barterConfig = {
+            id: "",
+            trader: "prapor",
+            trader_loyalty_level: 0,
+            unlimited_stock: false,
+            stock_amount: 1,
+            barter: [{ count: 0, _tpl: "tpl-invalid" }],
+        } as unknown as BarterConfig;
+
+        expect(() => mod.pushToTrader(barterConfig, "invalid-item", dbTraders as never, "Broken barter")).not.toThrow();
+        expect(mod.logger.log).toHaveBeenCalledWith(
+            "[Breker's Quest Key Barters] : Skipping invalid barter config 'Broken barter': id must be a non-empty string; trader_loyalty_level must be a positive integer; barter[0].count must be greater than 0",
+            "RED",
+        );
+
+        for (const trader of Object.values(dbTraders)) {
+            expect(trader.assort.items).toHaveLength(0);
+            expect(trader.assort.barter_scheme).toEqual({});
+            expect(trader.assort.loyal_level_items).toEqual({});
+        }
+    });
+
     it("pushToTrader creates unique offer IDs for duplicate item IDs on the same trader", () => {
         const dbTraders = createDbTraders();
         const itemId = "5938504186f7740991483f30";
@@ -206,8 +231,8 @@ describe("Quest Key Barters mod", () => {
         mod.pushSupportiveBarters(dbTraders as never);
 
         expect(pushToTraderSpy).toHaveBeenCalledTimes(Object.keys(barters).length);
-        for (const entry of Object.values(barters)) {
-            expect(pushToTraderSpy).toHaveBeenCalledWith(entry, entry.id, dbTraders);
+        for (const [barterName, entry] of Object.entries(barters)) {
+            expect(pushToTraderSpy).toHaveBeenCalledWith(entry, entry.id, dbTraders, barterName);
         }
     });
 
