@@ -131,6 +131,11 @@ describe("Quest Key Barters mod", () => {
         const dbTraders = createDbTraders();
         const itemId = "bad-trader-item";
         mod.logger = { log: vi.fn() } as never;
+        (mod as never as { localeGlobals?: Record<string, Record<string, string>> }).localeGlobals = {
+            en: {
+                "bad-trader-item Name": "Readable Key Name",
+            },
+        };
         const barterConfig = {
             trader: "trdaer",
             trader_loyalty_level: 1,
@@ -141,7 +146,7 @@ describe("Quest Key Barters mod", () => {
 
         expect(() => mod.pushToTrader(barterConfig, itemId, dbTraders as never)).not.toThrow();
         expect(mod.logger.log).toHaveBeenCalledWith(
-            "[Breker's Quest Key Barters] : Skipping barter for item bad-trader-item because trader 'trdaer' was not found",
+            "[Breker's Quest Key Barters] : Skipping barter for item 'Readable Key Name' (bad-trader-item) because trader 'trdaer' was not found",
             "RED",
         );
 

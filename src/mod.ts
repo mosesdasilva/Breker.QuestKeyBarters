@@ -15,6 +15,7 @@ import barters from "../config/barters.json";
 
 class Mod implements IPostDBLoadMod {
     private readonly mongoIdRegex = /^[a-f0-9]{24}$/i;
+    private localeGlobals?: Record<string, Record<string, string>>;
 
     
     logger: ILogger
@@ -29,6 +30,7 @@ class Mod implements IPostDBLoadMod {
         this.logger.log(`[${this.modName}] : Mod Loading`, LogTextColor.GREEN);
         const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
         const dbTables = databaseServer.getTables();
+        this.localeGlobals = dbTables.locales?.global;
         const dbTraders = dbTables.traders;
 
         this.pushSupportiveBarters(dbTraders);
@@ -61,7 +63,7 @@ class Mod implements IPostDBLoadMod {
         if (!trader)
         {
             this.logger.log(
-                `[${this.modName}] : Skipping barter for item ${itemID} because trader '${barterConfig.trader}' was not found`,
+                `[${this.modName}] : Skipping barter for item ${this.getItemLogLabel(itemID)} because trader '${barterConfig.trader}' was not found`,
                 LogTextColor.RED,
             );
             return;
@@ -128,6 +130,33 @@ class Mod implements IPostDBLoadMod {
         }
 
         return id;
+    }
+
+    private getItemLogLabel(itemID: string): string
+    {
+        const itemName = this.getItemName(itemID);
+        return itemName ? `'${itemName}' (${itemID})` : itemID;
+    }
+
+    private getItemName(itemID: string): string | undefined
+    {
+        const localeKey = `${itemID} Name`;
+        const englishName = this.localeGlobals?.en?.[localeKey];
+        if (englishName)
+        {
+            return englishName;
+        }
+
+        for (const locale of Object.values(this.localeGlobals ?? {}))
+        {
+            const localizedName = locale[localeKey];
+            if (localizedName)
+            {
+                return localizedName;
+            }
+        }
+
+        return undefined;
     }
 }
 
