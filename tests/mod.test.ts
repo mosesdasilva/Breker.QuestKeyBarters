@@ -164,6 +164,11 @@ describe("Quest Key Barters mod", () => {
     it("pushToTrader logs and skips invalid barter configs before mutating assorts", () => {
         const dbTraders = createDbTraders();
         mod.logger = { log: vi.fn() } as never;
+        (mod as never as { localeGlobals?: Record<string, Record<string, string>> }).localeGlobals = {
+            en: {
+                "tpl-invalid Name": "Toothpaste",
+            },
+        };
         const barterConfig = {
             id: "",
             trader: "prapor",
@@ -175,7 +180,7 @@ describe("Quest Key Barters mod", () => {
 
         expect(() => mod.pushToTrader(barterConfig, "invalid-item", dbTraders as never, "Broken barter")).not.toThrow();
         expect(mod.logger.log).toHaveBeenCalledWith(
-            "[Breker's Quest Key Barters] : Skipping invalid barter config 'Broken barter': id must be a non-empty string; trader_loyalty_level must be a positive integer; barter[0].count must be greater than 0",
+            "[Breker's Quest Key Barters] : Skipping invalid barter config 'Broken barter': item id cannot be empty; trader loyalty level must be 1 or higher; barter item 'Toothpaste' (tpl-invalid) quantity must be greater than 0",
             "RED",
         );
 

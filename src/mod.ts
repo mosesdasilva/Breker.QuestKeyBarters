@@ -129,45 +129,47 @@ class Mod implements IPostDBLoadMod {
 
         if (!this.isNonEmptyString(barterConfig.id))
         {
-            errors.push("id must be a non-empty string");
+            errors.push("item id cannot be empty");
         }
 
         if (!this.isNonEmptyString(barterConfig.trader))
         {
-            errors.push("trader must be a non-empty string");
+            errors.push("trader cannot be empty");
         }
 
         if (!Number.isInteger(barterConfig.trader_loyalty_level) || barterConfig.trader_loyalty_level < 1)
         {
-            errors.push("trader_loyalty_level must be a positive integer");
+            errors.push("trader loyalty level must be 1 or higher");
         }
 
         if (typeof barterConfig.unlimited_stock !== "boolean")
         {
-            errors.push("unlimited_stock must be a boolean");
+            errors.push("unlimited stock must be true or false");
         }
 
         if (!Number.isInteger(barterConfig.stock_amount) || barterConfig.stock_amount < 1)
         {
-            errors.push("stock_amount must be a positive integer");
+            errors.push("stock amount must be 1 or higher");
         }
 
         if (!Array.isArray(barterConfig.barter) || barterConfig.barter.length === 0)
         {
-            errors.push("barter must be a non-empty array");
+            errors.push("barter items must contain at least one entry");
             return errors;
         }
 
         for (const [index, barterItem] of barterConfig.barter.entries())
         {
+            const barterItemLabel = this.getBarterItemLogLabel(barterItem?._tpl, index);
+
             if (!Number.isFinite(barterItem?.count) || barterItem.count <= 0)
             {
-                errors.push(`barter[${index}].count must be greater than 0`);
+                errors.push(`${barterItemLabel} quantity must be greater than 0`);
             }
 
             if (!this.isNonEmptyString(barterItem?._tpl))
             {
-                errors.push(`barter[${index}]._tpl must be a non-empty string`);
+                errors.push(`barter item ${index + 1} id cannot be empty`);
             }
         }
 
@@ -216,6 +218,16 @@ class Mod implements IPostDBLoadMod {
     {
         const itemName = this.getItemName(itemID);
         return itemName ? `'${itemName}' (${itemID})` : itemID;
+    }
+
+    private getBarterItemLogLabel(itemID: unknown, index: number): string
+    {
+        if (!this.isNonEmptyString(itemID))
+        {
+            return `barter item ${index + 1}`;
+        }
+
+        return `barter item ${this.getItemLogLabel(itemID)}`;
     }
 
     private getItemName(itemID: string): string | undefined
