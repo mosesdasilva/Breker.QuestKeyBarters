@@ -59,7 +59,7 @@ Flow:
 - Treat `config/barters.json` as the main source of truth for gameplay changes.
 - Do not rewrite unrelated code or reformat files just to satisfy style warnings.
 - Preserve the existing structure: one runtime file, JSON-driven config, Vitest tests.
-- Treat `src/mod.ts` as the only source file that needs to ship from `src/`; do not add extra source files to the packaged mod unless requested.
+- Treat `src/mod.ts` as the only source file that needs to ship from `src/`; in this SPT 3.11.4 setup the server generates `src/mod.js` and `src/mod.js.map` on load, so do not add extra source files to the packaged mod unless requested.
 - Avoid over-engineering. This repo is intentionally simple.
 - Make assumptions explicit when repo behavior is unclear.
 - Do not fabricate new runtime systems, preset loaders, config formats, or build steps unless requested.
