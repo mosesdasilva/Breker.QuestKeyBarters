@@ -191,6 +191,103 @@ describe("Quest Key Barters mod", () => {
         }
     });
 
+    it("pushToTrader logs and skips configs with a missing barter array before mutating assorts", () => {
+        const dbTraders = createDbTraders();
+        mod.logger = { log: vi.fn() } as never;
+        const barterConfig = {
+            id: "missing-barter-item",
+            trader: "prapor",
+            trader_loyalty_level: 1,
+            unlimited_stock: false,
+            stock_amount: 1,
+        } as unknown as BarterConfig;
+
+        expect(() => mod.pushToTrader(barterConfig, "missing-barter-item", dbTraders as never, "Missing barter array")).not.toThrow();
+        expect(mod.logger.log).toHaveBeenCalledWith(
+            "[Breker's Quest Key Barters] : Skipping invalid barter config 'Missing barter array': barter items must contain at least one entry",
+            "RED",
+        );
+
+        for (const trader of Object.values(dbTraders)) {
+            expect(trader.assort.items).toHaveLength(0);
+            expect(trader.assort.barter_scheme).toEqual({});
+            expect(trader.assort.loyal_level_items).toEqual({});
+        }
+    });
+
+    it("pushToTrader logs and skips configs with an empty barter array before mutating assorts", () => {
+        const dbTraders = createDbTraders();
+        mod.logger = { log: vi.fn() } as never;
+        const barterConfig = {
+            id: "empty-barter-item",
+            trader: "prapor",
+            trader_loyalty_level: 1,
+            unlimited_stock: false,
+            stock_amount: 1,
+            barter: [],
+        } as unknown as BarterConfig;
+
+        expect(() => mod.pushToTrader(barterConfig, "empty-barter-item", dbTraders as never, "Empty barter array")).not.toThrow();
+        expect(mod.logger.log).toHaveBeenCalledWith(
+            "[Breker's Quest Key Barters] : Skipping invalid barter config 'Empty barter array': barter items must contain at least one entry",
+            "RED",
+        );
+
+        for (const trader of Object.values(dbTraders)) {
+            expect(trader.assort.items).toHaveLength(0);
+            expect(trader.assort.barter_scheme).toEqual({});
+            expect(trader.assort.loyal_level_items).toEqual({});
+        }
+    });
+
+    it("pushToTrader logs and skips invalid stock values before mutating assorts", () => {
+        const zeroStockTraders = createDbTraders();
+        mod.logger = { log: vi.fn() } as never;
+        const zeroStockConfig = {
+            id: "zero-stock-item",
+            trader: "prapor",
+            trader_loyalty_level: 1,
+            unlimited_stock: false,
+            stock_amount: 0,
+            barter: [{ count: 1, _tpl: "tpl-stock" }],
+        } as unknown as BarterConfig;
+
+        expect(() => mod.pushToTrader(zeroStockConfig, "zero-stock-item", zeroStockTraders as never, "Zero stock barter")).not.toThrow();
+        expect(mod.logger.log).toHaveBeenCalledWith(
+            "[Breker's Quest Key Barters] : Skipping invalid barter config 'Zero stock barter': stock amount must be 1 or higher",
+            "RED",
+        );
+
+        for (const trader of Object.values(zeroStockTraders)) {
+            expect(trader.assort.items).toHaveLength(0);
+            expect(trader.assort.barter_scheme).toEqual({});
+            expect(trader.assort.loyal_level_items).toEqual({});
+        }
+
+        const fractionalStockTraders = createDbTraders();
+        mod.logger = { log: vi.fn() } as never;
+        const fractionalStockConfig = {
+            id: "fractional-stock-item",
+            trader: "prapor",
+            trader_loyalty_level: 1,
+            unlimited_stock: false,
+            stock_amount: 1.5,
+            barter: [{ count: 1, _tpl: "tpl-stock" }],
+        } as unknown as BarterConfig;
+
+        expect(() => mod.pushToTrader(fractionalStockConfig, "fractional-stock-item", fractionalStockTraders as never, "Fractional stock barter")).not.toThrow();
+        expect(mod.logger.log).toHaveBeenCalledWith(
+            "[Breker's Quest Key Barters] : Skipping invalid barter config 'Fractional stock barter': stock amount must be 1 or higher",
+            "RED",
+        );
+
+        for (const trader of Object.values(fractionalStockTraders)) {
+            expect(trader.assort.items).toHaveLength(0);
+            expect(trader.assort.barter_scheme).toEqual({});
+            expect(trader.assort.loyal_level_items).toEqual({});
+        }
+    });
+
     it("pushToTrader creates unique offer IDs for duplicate item IDs on the same trader", () => {
         const dbTraders = createDbTraders();
         const itemId = "5938504186f7740991483f30";
