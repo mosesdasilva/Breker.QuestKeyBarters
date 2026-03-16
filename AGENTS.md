@@ -35,6 +35,7 @@ Build and tooling:
 - `tsconfig.json`: TypeScript config and `@spt/*` path mapping
 - `.eslintrc.json`: lint rules already visible in the repo
 - `.buildignore`: package exclusions
+- Manual in-game test install path: `C:\Dev\SPTMods\Single Player Tarkov\user\mods\breker-questkeybarters`
 
 Reference types:
 - `types/`: local SPT type declarations used for TypeScript authoring
@@ -58,6 +59,7 @@ Flow:
 - Treat `config/barters.json` as the main source of truth for gameplay changes.
 - Do not rewrite unrelated code or reformat files just to satisfy style warnings.
 - Preserve the existing structure: one runtime file, JSON-driven config, Vitest tests.
+- Treat `src/mod.ts` as the only source file that needs to ship from `src/`; do not add extra source files to the packaged mod unless requested.
 - Avoid over-engineering. This repo is intentionally simple.
 - Make assumptions explicit when repo behavior is unclear.
 - Do not fabricate new runtime systems, preset loaders, config formats, or build steps unless requested.
@@ -65,6 +67,7 @@ Flow:
 - When changing barter data, keep progression intent intact: helpful, limited, and not overpowered.
 - Do not treat `dist/` as source of truth unless release work is explicitly requested.
 - Always include `package.json` in built mod packages; for SPT mods it is required installation metadata, not development-only content.
+- Always include `README.md` in built mod packages so end users receive install and config instructions with the mod.
 
 ## Workflow Expectations
 - Work in an XP-style rhythm: small safe changes, frequent validation, and clear checkpoints.
@@ -101,6 +104,7 @@ Optional lint check:
 
 Packaging check, only when release work is requested:
 - `npm run build`
+- confirm the build includes `package.json`, `README.md`, `src/mod.ts`, and `config/`
 
 A task is not done until:
 - relevant tests pass
