@@ -83,6 +83,7 @@ Flow:
 - Default push timing is end of session, end of day, or after a known-good checkpoint.
 - If a risky change is about to start, consider suggesting a push of the last known-good state first.
 - Do not assume every local commit should be pushed immediately.
+- In this repo's PowerShell environment, do not chain commands with `&&`; run sequential commands as separate shell invocations to avoid parser failures and wasted retries.
 
 ## Validation Workflow
 Default:
