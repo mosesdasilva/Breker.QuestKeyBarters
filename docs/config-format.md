@@ -80,5 +80,5 @@ When editing `config/barters.json`:
 5. call out any assumptions not proven by tests
 
 ## Known Limitations
-- The schema is implicit in code and tests; there is no standalone schema validator.
+- The runtime skips malformed barter records with log output, but there is still no standalone schema file or preflight validator tool.
 - Preset files are not auto-selected by runtime.

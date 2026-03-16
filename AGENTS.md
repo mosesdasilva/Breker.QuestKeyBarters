@@ -35,6 +35,7 @@ Build and tooling:
 - `tsconfig.json`: TypeScript config and `@spt/*` path mapping
 - `.eslintrc.json`: lint rules already visible in the repo
 - `.buildignore`: package exclusions
+- Manual in-game test install path: `C:\Dev\SPTMods\Single Player Tarkov\user\mods\breker-questkeybarters`
 
 Reference types:
 - `types/`: local SPT type declarations used for TypeScript authoring
@@ -58,6 +59,7 @@ Flow:
 - Treat `config/barters.json` as the main source of truth for gameplay changes.
 - Do not rewrite unrelated code or reformat files just to satisfy style warnings.
 - Preserve the existing structure: one runtime file, JSON-driven config, Vitest tests.
+- Treat `src/mod.ts` as the only source file that needs to ship from `src/`; in this SPT 3.11.4 setup the server generates `src/mod.js` and `src/mod.js.map` on load, so do not add extra source files to the packaged mod unless requested.
 - Avoid over-engineering. This repo is intentionally simple.
 - Make assumptions explicit when repo behavior is unclear.
 - Do not fabricate new runtime systems, preset loaders, config formats, or build steps unless requested.
@@ -65,11 +67,13 @@ Flow:
 - When changing barter data, keep progression intent intact: helpful, limited, and not overpowered.
 - Do not treat `dist/` as source of truth unless release work is explicitly requested.
 - Always include `package.json` in built mod packages; for SPT mods it is required installation metadata, not development-only content.
+- Always include `README.md` in built mod packages so end users receive install and config instructions with the mod.
 
 ## Workflow Expectations
 - Work in an XP-style rhythm: small safe changes, frequent validation, and clear checkpoints.
 - Prefer TDD when practical: add or adjust a test near the behavior change, then implement the change.
 - Treat the user as an active pair-programming partner: surface assumptions, tradeoffs, and unclear repo behavior early.
+- Name branches by change type and intent, not by tool provenance; prefer slash-based names like `fix/...`, `refactor/...`, `feature/...`, or `chore/...`.
 - When a task reaches a meaningful checkpoint, suggest a commit instead of silently accumulating a large batch.
 - Prefer early and frequent commits for significant changes, but ask the user before committing unless they already asked for one.
 - Keep commits scoped to a single logical change when practical.
@@ -100,6 +104,9 @@ Optional lint check:
 
 Packaging check, only when release work is requested:
 - `npm run build`
+- confirm the build includes `package.json`, `README.md`, `src/mod.ts`, and `config/`
+- keep the generated zip as a release artifact, but for local manual installs copy from the built folder contents in `dist/`, not from the zip, unless the task is specifically to verify archive extraction/install behavior
+- for local manual installs or updates, delete the existing `SPT/user/mods/breker-questkeybarters` folder first so the install is always a fresh copy
 
 A task is not done until:
 - relevant tests pass

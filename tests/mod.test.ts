@@ -6,6 +6,7 @@ vi.mock(
     () => ({
         LogTextColor: {
             GREEN: "GREEN",
+            RED: "RED",
         },
     }),
     { virtual: true },
@@ -37,6 +38,7 @@ vi.mock(
 
 import { Traders } from "@spt/models/enums/Traders";
 import { mod } from "../src/mod";
+import type { BarterConfig } from "../src/mod";
 
 type Assort = {
     items: Array<Record<string, unknown>>;
@@ -73,7 +75,8 @@ describe("Quest Key Barters mod", () => {
     it("pushToTrader adds assort item, barter scheme, and loyalty level", () => {
         const dbTraders = createDbTraders();
         const itemId = "5938504186f7740991483f30";
-        const barterConfig = {
+        const barterConfig: BarterConfig = {
+            id: itemId,
             trader: "prapor",
             trader_loyalty_level: 2,
             unlimited_stock: true,
@@ -110,7 +113,8 @@ describe("Quest Key Barters mod", () => {
     it("pushToTrader supports direct trader IDs when no named mapping exists", () => {
         const dbTraders = createDbTraders();
         const itemId = "direct-id-item";
-        const barterConfig = {
+        const barterConfig: BarterConfig = {
+            id: itemId,
             trader: "CUSTOM_TRADER",
             trader_loyalty_level: 1,
             unlimited_stock: false,
@@ -126,17 +130,80 @@ describe("Quest Key Barters mod", () => {
         expect(dbTraders.CUSTOM_TRADER.assort.loyal_level_items[addedItem._id]).toBe(1);
     });
 
+    it("pushToTrader logs and skips entries for unknown traders", () => {
+        const dbTraders = createDbTraders();
+        const itemId = "bad-trader-item";
+        mod.logger = { log: vi.fn() } as never;
+        (mod as never as { localeGlobals?: Record<string, Record<string, string>> }).localeGlobals = {
+            en: {
+                "bad-trader-item Name": "Readable Key Name",
+            },
+        };
+        const barterConfig: BarterConfig = {
+            id: itemId,
+            trader: "trdaer",
+            trader_loyalty_level: 1,
+            unlimited_stock: false,
+            stock_amount: 1,
+            barter: [{ count: 1, _tpl: "tpl-invalid" }],
+        };
+
+        expect(() => mod.pushToTrader(barterConfig, itemId, dbTraders as never)).not.toThrow();
+        expect(mod.logger.log).toHaveBeenCalledWith(
+            "[Breker's Quest Key Barters] : Skipping barter for item 'Readable Key Name' (bad-trader-item) because trader 'trdaer' was not found",
+            "RED",
+        );
+
+        for (const trader of Object.values(dbTraders)) {
+            expect(trader.assort.items).toHaveLength(0);
+            expect(trader.assort.barter_scheme).toEqual({});
+            expect(trader.assort.loyal_level_items).toEqual({});
+        }
+    });
+
+    it("pushToTrader logs and skips invalid barter configs before mutating assorts", () => {
+        const dbTraders = createDbTraders();
+        mod.logger = { log: vi.fn() } as never;
+        (mod as never as { localeGlobals?: Record<string, Record<string, string>> }).localeGlobals = {
+            en: {
+                "tpl-invalid Name": "Toothpaste",
+            },
+        };
+        const barterConfig = {
+            id: "",
+            trader: "prapor",
+            trader_loyalty_level: 0,
+            unlimited_stock: false,
+            stock_amount: 1,
+            barter: [{ count: 0, _tpl: "tpl-invalid" }],
+        } as unknown as BarterConfig;
+
+        expect(() => mod.pushToTrader(barterConfig, "invalid-item", dbTraders as never, "Broken barter")).not.toThrow();
+        expect(mod.logger.log).toHaveBeenCalledWith(
+            "[Breker's Quest Key Barters] : Skipping invalid barter config 'Broken barter': item id cannot be empty; trader loyalty level must be 1 or higher; barter item 'Toothpaste' (tpl-invalid) quantity must be greater than 0",
+            "RED",
+        );
+
+        for (const trader of Object.values(dbTraders)) {
+            expect(trader.assort.items).toHaveLength(0);
+            expect(trader.assort.barter_scheme).toEqual({});
+            expect(trader.assort.loyal_level_items).toEqual({});
+        }
+    });
+
     it("pushToTrader creates unique offer IDs for duplicate item IDs on the same trader", () => {
         const dbTraders = createDbTraders();
         const itemId = "5938504186f7740991483f30";
-        const firstBarterConfig = {
+        const firstBarterConfig: BarterConfig = {
+            id: itemId,
             trader: "prapor",
             trader_loyalty_level: 1,
             unlimited_stock: false,
             stock_amount: 1,
             barter: [{ count: 1, _tpl: "tpl-a" }],
         };
-        const secondBarterConfig = {
+        const secondBarterConfig: BarterConfig = {
+            id: itemId,
             trader: "prapor",
             trader_loyalty_level: 2,
             unlimited_stock: false,
@@ -169,8 +236,8 @@ describe("Quest Key Barters mod", () => {
         mod.pushSupportiveBarters(dbTraders as never);
 
         expect(pushToTraderSpy).toHaveBeenCalledTimes(Object.keys(barters).length);
-        for (const entry of Object.values(barters)) {
-            expect(pushToTraderSpy).toHaveBeenCalledWith(entry, entry.id, dbTraders);
+        for (const [barterName, entry] of Object.entries(barters)) {
+            expect(pushToTraderSpy).toHaveBeenCalledWith(entry, entry.id, dbTraders, barterName);
         }
     });
 
