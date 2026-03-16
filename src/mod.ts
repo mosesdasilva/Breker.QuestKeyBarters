@@ -58,6 +58,15 @@ class Mod implements IPostDBLoadMod {
             }
         }
         const trader = dbTraders[traderToPush];
+        if (!trader)
+        {
+            this.logger.log(
+                `[${this.modName}] : Skipping barter for item ${itemID} because trader '${barterConfig.trader}' was not found`,
+                LogTextColor.RED,
+            );
+            return;
+        }
+
         const offerId = this.getUniqueOfferId(trader, itemID);
 
         trader.assort.items.push({

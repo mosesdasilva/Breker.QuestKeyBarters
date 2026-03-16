@@ -6,6 +6,7 @@ vi.mock(
     () => ({
         LogTextColor: {
             GREEN: "GREEN",
+            RED: "RED",
         },
     }),
     { virtual: true },
