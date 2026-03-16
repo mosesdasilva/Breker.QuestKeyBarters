@@ -106,6 +106,7 @@ Optional lint check:
 Packaging check, only when release work is requested:
 - `npm run build`
 - confirm the build includes `package.json`, `README.md`, `src/mod.ts`, and `config/`
+- keep the generated zip as a release artifact, but for local manual installs copy from the built folder contents in `dist/`, not from the zip, unless the task is specifically to verify archive extraction/install behavior
 
 A task is not done until:
 - relevant tests pass
