@@ -47,6 +47,7 @@ type Assort = {
 };
 
 type TraderMap = Record<string, { assort: Assort }>;
+type LoggerMock = { log: ReturnType<typeof vi.fn> };
 
 const createTrader = (): { assort: Assort } => ({
     assort: {
@@ -54,6 +55,10 @@ const createTrader = (): { assort: Assort } => ({
         barter_scheme: {},
         loyal_level_items: {},
     },
+});
+
+const createLogger = (): LoggerMock => ({
+    log: vi.fn(),
 });
 
 const createDbTraders = (): TraderMap => ({
@@ -133,7 +138,8 @@ describe("Quest Key Barters mod", () => {
     it("pushToTrader logs and skips entries for unknown traders", () => {
         const dbTraders = createDbTraders();
         const itemId = "bad-trader-item";
-        mod.logger = { log: vi.fn() } as never;
+        const logger = createLogger();
+        mod.setLogger(logger as never);
         (mod as never as { localeGlobals?: Record<string, Record<string, string>> }).localeGlobals = {
             en: {
                 "bad-trader-item Name": "Readable Key Name",
@@ -149,7 +155,7 @@ describe("Quest Key Barters mod", () => {
         };
 
         expect(() => mod.pushToTrader(barterConfig, itemId, dbTraders as never)).not.toThrow();
-        expect(mod.logger.log).toHaveBeenCalledWith(
+        expect(logger.log).toHaveBeenCalledWith(
             "[Breker's Quest Key Barters] : Skipping barter for item 'Readable Key Name' (bad-trader-item) because trader 'trdaer' was not found",
             "RED",
         );
@@ -163,7 +169,8 @@ describe("Quest Key Barters mod", () => {
 
     it("pushToTrader logs and skips invalid barter configs before mutating assorts", () => {
         const dbTraders = createDbTraders();
-        mod.logger = { log: vi.fn() } as never;
+        const logger = createLogger();
+        mod.setLogger(logger as never);
         (mod as never as { localeGlobals?: Record<string, Record<string, string>> }).localeGlobals = {
             en: {
                 "tpl-invalid Name": "Toothpaste",
@@ -179,7 +186,7 @@ describe("Quest Key Barters mod", () => {
         } as unknown as BarterConfig;
 
         expect(() => mod.pushToTrader(barterConfig, "invalid-item", dbTraders as never, "Broken barter")).not.toThrow();
-        expect(mod.logger.log).toHaveBeenCalledWith(
+        expect(logger.log).toHaveBeenCalledWith(
             "[Breker's Quest Key Barters] : Skipping invalid barter config 'Broken barter': item id cannot be empty; trader loyalty level must be 1 or higher; barter item 'Toothpaste' (tpl-invalid) quantity must be greater than 0",
             "RED",
         );
@@ -193,7 +200,8 @@ describe("Quest Key Barters mod", () => {
 
     it("pushToTrader logs and skips configs with a missing barter array before mutating assorts", () => {
         const dbTraders = createDbTraders();
-        mod.logger = { log: vi.fn() } as never;
+        const logger = createLogger();
+        mod.setLogger(logger as never);
         const barterConfig = {
             id: "missing-barter-item",
             trader: "prapor",
@@ -203,7 +211,7 @@ describe("Quest Key Barters mod", () => {
         } as unknown as BarterConfig;
 
         expect(() => mod.pushToTrader(barterConfig, "missing-barter-item", dbTraders as never, "Missing barter array")).not.toThrow();
-        expect(mod.logger.log).toHaveBeenCalledWith(
+        expect(logger.log).toHaveBeenCalledWith(
             "[Breker's Quest Key Barters] : Skipping invalid barter config 'Missing barter array': barter items must contain at least one entry",
             "RED",
         );
@@ -217,7 +225,8 @@ describe("Quest Key Barters mod", () => {
 
     it("pushToTrader logs and skips configs with an empty barter array before mutating assorts", () => {
         const dbTraders = createDbTraders();
-        mod.logger = { log: vi.fn() } as never;
+        const logger = createLogger();
+        mod.setLogger(logger as never);
         const barterConfig = {
             id: "empty-barter-item",
             trader: "prapor",
@@ -228,7 +237,7 @@ describe("Quest Key Barters mod", () => {
         } as unknown as BarterConfig;
 
         expect(() => mod.pushToTrader(barterConfig, "empty-barter-item", dbTraders as never, "Empty barter array")).not.toThrow();
-        expect(mod.logger.log).toHaveBeenCalledWith(
+        expect(logger.log).toHaveBeenCalledWith(
             "[Breker's Quest Key Barters] : Skipping invalid barter config 'Empty barter array': barter items must contain at least one entry",
             "RED",
         );
@@ -242,7 +251,8 @@ describe("Quest Key Barters mod", () => {
 
     it("pushToTrader logs and skips invalid stock values before mutating assorts", () => {
         const zeroStockTraders = createDbTraders();
-        mod.logger = { log: vi.fn() } as never;
+        const zeroStockLogger = createLogger();
+        mod.setLogger(zeroStockLogger as never);
         const zeroStockConfig = {
             id: "zero-stock-item",
             trader: "prapor",
@@ -253,7 +263,7 @@ describe("Quest Key Barters mod", () => {
         } as unknown as BarterConfig;
 
         expect(() => mod.pushToTrader(zeroStockConfig, "zero-stock-item", zeroStockTraders as never, "Zero stock barter")).not.toThrow();
-        expect(mod.logger.log).toHaveBeenCalledWith(
+        expect(zeroStockLogger.log).toHaveBeenCalledWith(
             "[Breker's Quest Key Barters] : Skipping invalid barter config 'Zero stock barter': stock amount must be 1 or higher",
             "RED",
         );
@@ -265,7 +275,8 @@ describe("Quest Key Barters mod", () => {
         }
 
         const fractionalStockTraders = createDbTraders();
-        mod.logger = { log: vi.fn() } as never;
+        const fractionalStockLogger = createLogger();
+        mod.setLogger(fractionalStockLogger as never);
         const fractionalStockConfig = {
             id: "fractional-stock-item",
             trader: "prapor",
@@ -276,7 +287,7 @@ describe("Quest Key Barters mod", () => {
         } as unknown as BarterConfig;
 
         expect(() => mod.pushToTrader(fractionalStockConfig, "fractional-stock-item", fractionalStockTraders as never, "Fractional stock barter")).not.toThrow();
-        expect(mod.logger.log).toHaveBeenCalledWith(
+        expect(fractionalStockLogger.log).toHaveBeenCalledWith(
             "[Breker's Quest Key Barters] : Skipping invalid barter config 'Fractional stock barter': stock amount must be 1 or higher",
             "RED",
         );
