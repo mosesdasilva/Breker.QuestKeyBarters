@@ -126,6 +126,31 @@ describe("Quest Key Barters mod", () => {
         expect(dbTraders.CUSTOM_TRADER.assort.loyal_level_items[addedItem._id]).toBe(1);
     });
 
+    it("pushToTrader logs and skips entries for unknown traders", () => {
+        const dbTraders = createDbTraders();
+        const itemId = "bad-trader-item";
+        mod.logger = { log: vi.fn() } as never;
+        const barterConfig = {
+            trader: "trdaer",
+            trader_loyalty_level: 1,
+            unlimited_stock: false,
+            stock_amount: 1,
+            barter: [{ count: 1, _tpl: "tpl-invalid" }],
+        };
+
+        expect(() => mod.pushToTrader(barterConfig, itemId, dbTraders as never)).not.toThrow();
+        expect(mod.logger.log).toHaveBeenCalledWith(
+            "[Breker's Quest Key Barters] : Skipping barter for item bad-trader-item because trader 'trdaer' was not found",
+            "RED",
+        );
+
+        for (const trader of Object.values(dbTraders)) {
+            expect(trader.assort.items).toHaveLength(0);
+            expect(trader.assort.barter_scheme).toEqual({});
+            expect(trader.assort.loyal_level_items).toEqual({});
+        }
+    });
+
     it("pushToTrader creates unique offer IDs for duplicate item IDs on the same trader", () => {
         const dbTraders = createDbTraders();
         const itemId = "5938504186f7740991483f30";
