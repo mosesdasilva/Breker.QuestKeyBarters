@@ -34,17 +34,15 @@ const barters: BarterConfigMap = bartersJson;
 class Mod implements IPostDBLoadMod {
     private readonly mongoIdRegex = /^[a-f0-9]{24}$/i;
     private localeGlobals?: Record<string, Record<string, string>>;
-
-    
-    logger: ILogger
-    modName: string
+    private loggerInstance?: ILogger;
+    private readonly modName: string;
     
     constructor(){ 
-        this.modName = "Breker's Quest Key Barters"
+        this.modName = "Breker's Quest Key Barters";
     }
 
     public postDBLoad(container: DependencyContainer): void {
-        this.logger = container.resolve<ILogger>("WinstonLogger");
+        this.setLogger(container.resolve<ILogger>("WinstonLogger"));
         this.logger.log(`[${this.modName}] : Mod Loading`, LogTextColor.GREEN);
         const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
         const dbTables = databaseServer.getTables();
@@ -53,6 +51,12 @@ class Mod implements IPostDBLoadMod {
 
         this.pushSupportiveBarters(dbTraders);
     }
+
+    public setLogger(logger: ILogger): void
+    {
+        this.loggerInstance = logger;
+    }
+
     pushSupportiveBarters(dbTraders: Record<string, ITrader>):void{
         for (const [barterName, barter] of Object.entries(barters)){
             this.pushToTrader(barter, barter.id, dbTraders, barterName); 
@@ -86,13 +90,7 @@ class Mod implements IPostDBLoadMod {
             ragman: Traders.RAGMAN
         };
 
-        let traderToPush = barterConfig.trader;
-        for (const [key, val] of Object.entries(traderIDs))
-        {
-            if (key === barterConfig.trader){
-                traderToPush = val;
-            }
-        }
+        const traderToPush = traderIDs[barterConfig.trader] ?? barterConfig.trader;
         const trader = dbTraders[traderToPush];
         if (!trader)
         {
@@ -254,6 +252,16 @@ class Mod implements IPostDBLoadMod {
     private isNonEmptyString(value: unknown): value is string
     {
         return typeof value === "string" && value.trim().length > 0;
+    }
+
+    private get logger(): ILogger
+    {
+        if (!this.loggerInstance)
+        {
+            throw new Error("Logger has not been initialized");
+        }
+
+        return this.loggerInstance;
     }
 }
 
