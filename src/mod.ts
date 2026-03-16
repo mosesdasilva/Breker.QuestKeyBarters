@@ -7,7 +7,25 @@ import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { Traders } from "@spt/models/enums/Traders";
 import { ITrader } from "@spt/models/eft/common/tables/ITrader";
 
-import barters from "../config/barters.json";
+import bartersJson from "../config/barters.json";
+
+export interface BarterRequirement {
+    count: number;
+    _tpl: string;
+}
+
+export interface BarterConfig {
+    id: string;
+    trader: string;
+    trader_loyalty_level: number;
+    unlimited_stock: boolean;
+    stock_amount: number;
+    barter: BarterRequirement[];
+}
+
+type BarterConfigMap = Record<string, BarterConfig>;
+
+const barters: BarterConfigMap = bartersJson;
 
 
 
@@ -36,12 +54,12 @@ class Mod implements IPostDBLoadMod {
         this.pushSupportiveBarters(dbTraders);
     }
     pushSupportiveBarters(dbTraders: Record<string, ITrader>):void{
-        for (const barter of Object.keys(barters)){
-            this.pushToTrader(barters[barter], barters[barter].id, dbTraders); 
+        for (const barter of Object.values(barters)){
+            this.pushToTrader(barter, barter.id, dbTraders); 
         }
     }
 
-    pushToTrader(barterConfig, itemID:string, dbTraders: Record<string, ITrader>,){ 
+    pushToTrader(barterConfig: BarterConfig, itemID:string, dbTraders: Record<string, ITrader>,){ 
         const traderIDs = {
             mechanic: Traders.MECHANIC,
             skier: Traders.SKIER,
@@ -83,12 +101,7 @@ class Mod implements IPostDBLoadMod {
             }
         });
 
-        const barterTrade: any = [];
-        const configBarters = barterConfig.barter;
-
-        for (const barter in configBarters){
-            barterTrade.push(configBarters[barter]);
-        }
+        const barterTrade: BarterRequirement[] = [...barterConfig.barter];
 
         trader.assort.barter_scheme[offerId] = [barterTrade];
         trader.assort.loyal_level_items[offerId] = barterConfig.trader_loyalty_level;  

@@ -38,6 +38,7 @@ vi.mock(
 
 import { Traders } from "@spt/models/enums/Traders";
 import { mod } from "../src/mod";
+import type { BarterConfig } from "../src/mod";
 
 type Assort = {
     items: Array<Record<string, unknown>>;
@@ -74,7 +75,8 @@ describe("Quest Key Barters mod", () => {
     it("pushToTrader adds assort item, barter scheme, and loyalty level", () => {
         const dbTraders = createDbTraders();
         const itemId = "5938504186f7740991483f30";
-        const barterConfig = {
+        const barterConfig: BarterConfig = {
+            id: itemId,
             trader: "prapor",
             trader_loyalty_level: 2,
             unlimited_stock: true,
@@ -111,7 +113,8 @@ describe("Quest Key Barters mod", () => {
     it("pushToTrader supports direct trader IDs when no named mapping exists", () => {
         const dbTraders = createDbTraders();
         const itemId = "direct-id-item";
-        const barterConfig = {
+        const barterConfig: BarterConfig = {
+            id: itemId,
             trader: "CUSTOM_TRADER",
             trader_loyalty_level: 1,
             unlimited_stock: false,
@@ -136,7 +139,8 @@ describe("Quest Key Barters mod", () => {
                 "bad-trader-item Name": "Readable Key Name",
             },
         };
-        const barterConfig = {
+        const barterConfig: BarterConfig = {
+            id: itemId,
             trader: "trdaer",
             trader_loyalty_level: 1,
             unlimited_stock: false,
@@ -160,14 +164,16 @@ describe("Quest Key Barters mod", () => {
     it("pushToTrader creates unique offer IDs for duplicate item IDs on the same trader", () => {
         const dbTraders = createDbTraders();
         const itemId = "5938504186f7740991483f30";
-        const firstBarterConfig = {
+        const firstBarterConfig: BarterConfig = {
+            id: itemId,
             trader: "prapor",
             trader_loyalty_level: 1,
             unlimited_stock: false,
             stock_amount: 1,
             barter: [{ count: 1, _tpl: "tpl-a" }],
         };
-        const secondBarterConfig = {
+        const secondBarterConfig: BarterConfig = {
+            id: itemId,
             trader: "prapor",
             trader_loyalty_level: 2,
             unlimited_stock: false,
