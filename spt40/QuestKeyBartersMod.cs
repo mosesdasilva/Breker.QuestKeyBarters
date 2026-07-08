@@ -17,7 +17,6 @@ public sealed class QuestKeyBartersMod(
     ISptLogger<QuestKeyBartersMod> logger) : IOnLoad
 {
     private const string ModName = "Breker's Quest Key Barters";
-    private const string MilestoneBarterName = "Dorm room 203 key";
 
     private static readonly Dictionary<string, string> TraderIds = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -33,13 +32,22 @@ public sealed class QuestKeyBartersMod(
     public Task OnLoad()
     {
         var barters = LoadBarters();
-        if (!barters.TryGetValue(MilestoneBarterName, out var barter))
+        var addedCount = 0;
+        var skippedCount = 0;
+
+        foreach (var (barterName, barter) in barters)
         {
-            logger.Error($"[{ModName}] Could not find milestone barter '{MilestoneBarterName}' in config/barters.json.");
-            return Task.CompletedTask;
+            if (AddConfiguredBarter(barterName, barter))
+            {
+                addedCount++;
+            }
+            else
+            {
+                skippedCount++;
+            }
         }
 
-        AddConfiguredBarter(MilestoneBarterName, barter);
+        logger.Success($"[{ModName}] Added {addedCount} quest-key barters from config/barters.json. Skipped {skippedCount}.");
         return Task.CompletedTask;
     }
 
@@ -49,13 +57,13 @@ public sealed class QuestKeyBartersMod(
         return modHelper.GetJsonDataFromFile<Dictionary<string, BarterConfig>>(pathToMod, "config/barters.json");
     }
 
-    private void AddConfiguredBarter(string barterName, BarterConfig barter)
+    private bool AddConfiguredBarter(string barterName, BarterConfig barter)
     {
         var errors = Validate(barter);
         if (errors.Count > 0)
         {
             logger.Error($"[{ModName}] Skipping invalid barter config '{barterName}': {string.Join("; ", errors)}");
-            return;
+            return false;
         }
 
         var traderId = TraderIds.GetValueOrDefault(barter.Trader, barter.Trader);
@@ -63,7 +71,7 @@ public sealed class QuestKeyBartersMod(
         if (traderData is null)
         {
             logger.Error($"[{ModName}] Could not add '{barterName}' because trader '{barter.Trader}' was not found.");
-            return;
+            return false;
         }
 
         var offerId = new MongoId();
@@ -88,7 +96,8 @@ public sealed class QuestKeyBartersMod(
         }).ToList()];
         traderData.Assort.LoyalLevelItems[offerId] = barter.TraderLoyaltyLevel;
 
-        logger.Success($"[{ModName}] Added '{barterName}' from config/barters.json.");
+        logger.Info($"[{ModName}] Added '{barterName}' from config/barters.json.");
+        return true;
     }
 
     private static List<string> Validate(BarterConfig barter)
