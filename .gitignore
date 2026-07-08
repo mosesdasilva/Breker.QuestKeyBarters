@@ -2,6 +2,9 @@
 package-lock.json
 node_modules/
 dist/
+reference-src/
+spt40/bin/
+spt40/obj/
 src/*.js
 bundles/Extract
 bundles.json
